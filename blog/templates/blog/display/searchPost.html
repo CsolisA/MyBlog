@@ -1,0 +1,27 @@
+{% extends 'master.html' %} {% load static %}
+{% block title %}- Search Post{% endblock %}
+{% block content %}
+
+    <div class="container">
+        <div class="container mt-3">
+        <h1 class="mb-2">You Still Haven't Found What You're Looking For, Have You?:</h1>
+        {% if posts %}
+            <div class="d-flex">
+                {% for post in posts %}
+
+                    <div class="card mx-2" style="width: 18rem;">
+                        <img src="{{ post.image }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.name }}</h5>
+                            <p class="card-text">{{ post.body }}</p>
+                            <a href="#" class="btn btn-primary">Go to Post</a>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    </div>
+
+{% endblock %}

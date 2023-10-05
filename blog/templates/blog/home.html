@@ -1,0 +1,52 @@
+{% extends 'master.html' %} {% load static %}
+{% block content %}
+    <div id="carouselExampleDark" class="carousel carousel-dark slide">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+                <img src="https://i0.wp.com/industryme.co.uk/wp-content/uploads/2021/09/photo-1619229665486-19f7ee2987a5.jpeg?fit=1650%2C1100&ssl=1"
+                     class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Get the latest news</h5>
+                    <p>Welcome to my blogs</p>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <h1 class="mb-2">Latest News:</h1>
+        {% if posts %}
+            <div class="d-flex">
+                {% for post in posts %}
+
+                    <div class="card mx-2" style="width: 18rem;">
+                        <img src="{{ post.image }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.name }}</h5>
+                            <p class="card-text">{{ post.body }}</p>
+                            <a href="#" class="btn btn-primary">Go to Post</a>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

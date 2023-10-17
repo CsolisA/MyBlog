@@ -3,4 +3,29 @@
 
 {% block content %}
 
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{{ post.image }}" class="d-block w-100" alt="...">
+            </div>
+        </div>
+    </div>
+
+    <div class="container p-5">
+
+        <div class="row">
+            <h1 class="display-3">{{ post.name }}</h1>
+        </div>
+        <div class="row">
+            <figcaption class="blockquote-footer">
+                {{ post.subtitle }}
+            </figcaption>
+        </div>
+        <div class="row">
+            <p>{{ post.body }}</p>
+        </div>
+        <p>Author: <span class="badge bg-primary">{{ post.author }}</span></p>
+        <p>Date: <span class="badge bg-secondary">{{ post.creation_date }}</span></p>
+    </div>
+
 {% endblock %}

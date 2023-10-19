@@ -9,3 +9,5 @@ admin.site.register(Subject)
 admin.site.register(Post)
 
 admin.site.register(Comments)
+
+admin.site.register(Avatar)

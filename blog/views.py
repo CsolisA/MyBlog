@@ -1,11 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from blog.models import Post, Subject
+from blog.models import Post, Subject, Avatar
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from blog.userForms import UserRegisterForm
-from blog.postForms import postForm
-import datetime
+from blog.forms import UserRegisterForm, UserEditForm
 
 
 # Create your views here.
@@ -51,6 +50,7 @@ def allPages(request):
     return render(request, "blog/display/allPages.html", {'posts': formattedPost, 'totalPost': totalPost})
 
 
+@login_required
 def insertPost(request):
     subjectObj = Subject.objects.get(pk=1)
     user = User.objects.get(id=request.user.id)
@@ -73,7 +73,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
 
-                return render(request, "blog/home.html", {"message": f"Bienvenido {username}"})
+                return index(request)
             else:
                 return render(request, "blog/auth/login.html",
                               {"message": "Oops Something went wrong, please check your credentials."})
@@ -102,32 +102,81 @@ def register(request):
     return render(request, "blog/auth/register.html", {"form": form})
 
 
+@login_required
 def myPosts(request):
     posts = Post.objects.all().filter(author_id=request.user.id)
     totalPost = len(posts)
     return render(request, "blog/display/myPosts.html", {'posts': posts, 'totalPost': totalPost})
 
 
+@login_required
 def modifyPost(request, id):
     post = Post.objects.get(id=id)
 
     if request.method == 'POST':
-
-            post.name = request.POST['name']
-            post.subtitle = request.POST['subtitle']
-            post.body = request.POST['body']
-            post.image = request.POST['image']
-            post.save()
+        post.name = request.POST['name']
+        post.subtitle = request.POST['subtitle']
+        post.body = request.POST['body']
+        post.image = request.POST['image']
+        post.save()
 
     return render(request, "blog/edit/post.html", {"post": post})
 
 
+@login_required
 def deletePost(request, id):
     post = Post.objects.get(id=id)
     post.delete()
     return index(request)
 
 
+@login_required
 def logout_view(request):
     logout(request)
-    return render(request, "blog/home.html", {"message": "Log Out Successfully"})
+    return index(request)
+
+
+@login_required
+def showProfile(request):
+    myForm = UserEditForm(
+        initial={'firstName': request.user.first_name, 'lastName': request.user.last_name, 'email': request.user.email})
+    return render(request, "blog/auth/editProfile.html", {"myForm": myForm, "user": request.user, 'status': False})
+
+
+@login_required
+def editProfile(request):
+    user = request.user
+    myForm = UserEditForm(request.POST)
+    status = False
+
+    if myForm.is_valid():
+        user.email = myForm.cleaned_data['email']
+        user.password1 = myForm.cleaned_data['password1']
+        user.password2 = myForm.cleaned_data['password1']
+        status = True
+        user.save()
+
+    return render(request, "blog/auth/editProfile.html", {"myForm": myForm, "user": request.user, 'status': status})
+
+
+@login_required
+def addProfileIcon(request):
+    if request.method == 'POST':
+
+        miFormulario = AvatarFormulario(request.POST, request.FILES)  # aquí mellega toda la información del html
+
+        if miFormulario.is_valid:  # Si pasó la validación de Django
+
+            u = User.objects.get(username=request.user)
+
+            avatar = Avatar(user=u, imagen=miFormulario.cleaned_data['imagen'])
+
+            avatar.save()
+
+            return render(request, "AppCoder/inicio.html")  # Vuelvo al inicio o a donde quieran
+
+    else:
+
+        miFormulario = AvatarFormulario()  # Formulario vacio para construir el html
+
+    return render(request, "AppCoder/agregarAvatar.html", {"miFormulario": miFormulario})

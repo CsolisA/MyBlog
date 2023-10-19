@@ -37,6 +37,12 @@
                 <span class="navbar-text">
                     <a class="nav-link active text-white" aria-current="page" href="{% url 'logout' %}">Log Out</a>
                 </span>
+                <span class="navbar-text">
+                    <a class="nav-link active text-white" aria-current="page" href="{% url 'showProfile' %}">
+                        Profile
+{#                        <img src="{% url 'url' %}" alt="" width="30" height="24" class="d-inline-block align-text-top">#}
+                    </a>
+                </span>
             {% else %}
                 <span class="navbar-text">
                    <a class="nav-link active text-white" aria-current="page" href="{% url 'login' %}">Login</a>

@@ -1,0 +1,22 @@
+{% extends 'master.html' %} {% load static %}
+{% block title %}- Profile{% endblock %}
+{% block content %}
+    <div class="container p-5">
+
+        {% if status %}
+            <div class="alert alert-success" role="alert">
+                Your Profile was updated!
+            </div>
+        {% endif %}
+
+        <form action="{% url 'editProfile' %}" method="POST">
+            {% csrf_token %}
+            <table>
+                {{ myForm.as_table }}
+            </table>
+
+            <button type="submit">Submit Form</button>
+
+        </form>
+    </div>
+{% endblock %}

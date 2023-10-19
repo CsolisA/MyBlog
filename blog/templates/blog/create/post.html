@@ -2,7 +2,8 @@
 {% block title %}- Create Post{% endblock %}
 
 {% block content %}
-    <div class="container mt-4">
+    <div class="container p-4">
+    <h1 class="display-3 mb-5">Create Post</h1>
         <form action="{% url 'insertPost' %}" method="post">
             {% csrf_token %}
             <div class="mb-3">
